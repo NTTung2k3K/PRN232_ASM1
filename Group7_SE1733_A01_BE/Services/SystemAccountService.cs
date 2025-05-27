@@ -39,8 +39,8 @@ namespace Services
             if (string.IsNullOrWhiteSpace(SystemAccount.AccountPassword))
                 throw new ArgumentException("AccountPassword cannot be null or empty.");
 
-            if (!SystemAccount.AccountRole.HasValue || SystemAccount.AccountRole < 0 || SystemAccount.AccountRole > 2)
-                throw new ArgumentOutOfRangeException(nameof(SystemAccount.AccountRole), "AccountRole must be between 0 and 2.");
+            if (!SystemAccount.AccountRole.HasValue || SystemAccount.AccountRole < 1 || SystemAccount.AccountRole > 2)
+                throw new ArgumentOutOfRangeException(nameof(SystemAccount.AccountRole), "AccountRole must be between 1 and 2.");
 
             if (SystemAccount.AccountEmail.Length > 100)
                 throw new ArgumentException("AccountEmail cannot exceed 100 characters.");
@@ -120,8 +120,8 @@ namespace Services
             if (string.IsNullOrWhiteSpace(SystemAccount.AccountPassword))
                 throw new ArgumentException("AccountPassword cannot be null or empty.");
 
-            if (!SystemAccount.AccountRole.HasValue || SystemAccount.AccountRole < 0 || SystemAccount.AccountRole > 2)
-                throw new ArgumentOutOfRangeException(nameof(SystemAccount.AccountRole), "AccountRole must be between 0 and 2.");
+            if (!SystemAccount.AccountRole.HasValue || SystemAccount.AccountRole < 1 || SystemAccount.AccountRole > 2)
+                throw new ArgumentOutOfRangeException(nameof(SystemAccount.AccountRole), "AccountRole must be between 1 and 2.");
 
             if (SystemAccount.AccountEmail.Length > 100)
                 throw new ArgumentException("AccountEmail cannot exceed 100 characters.");

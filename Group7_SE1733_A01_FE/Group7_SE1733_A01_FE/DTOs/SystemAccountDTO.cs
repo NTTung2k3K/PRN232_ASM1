@@ -28,7 +28,7 @@ namespace Group7_SE1733_A01_FE.Response
         public string AccountEmail { get; set; }
 
         [Required(ErrorMessage = "AccountRole is required.")]
-        [Range(0, 2, ErrorMessage = "AccountRole must be between 0 and 2.")]
+        [Range(1, 2, ErrorMessage = "AccountRole must be 1 for Staff or 2 for Lecturer.")]
         public int? AccountRole { get; set; }
 
         [Required(ErrorMessage = "AccountPassword is required.")]
@@ -51,7 +51,7 @@ namespace Group7_SE1733_A01_FE.Response
         public string AccountEmail { get; set; }
 
         [Required(ErrorMessage = "AccountRole is required.")]
-        [Range(0, 2, ErrorMessage = "AccountRole must be between 0 and 2.")]
+        [Range(1, 2, ErrorMessage = "AccountRole must be 1 for Staff or 2 for Lecturer.")]
         public int? AccountRole { get; set; }
 
         [Required(ErrorMessage = "AccountPassword is required.")]
