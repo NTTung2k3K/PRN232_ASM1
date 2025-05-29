@@ -37,6 +37,20 @@ namespace Services.DTOs
         public List<TagCreateDTO> Tags { get; set; }
     }
 
+    public class NewsArticleUpdateDTO
+    {
+        public string NewsTitle { get; set; }
+        public string Headline { get; set; }
+        public string NewsContent { get; set; }
+        public string NewsSource { get; set; }
+        public short? CategoryId { get; set; }
+        public bool? NewsStatus { get; set; }
+        public short? UpdatedById { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+
+        public List<TagDTO> Tags { get; set; }
+    }
+
     public class TagCreateDTO
     {
         public string TagName { get; set; }

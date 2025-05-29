@@ -64,7 +64,7 @@ namespace Group7_SE1733_A01_BE.Controllers
 
         // PUT: api/NewsArticles/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody] NewsArticleDTO dto)
+        public async Task<IActionResult> Update(string id, [FromBody] NewsArticleUpdateDTO dto)
         {
             try
             {
