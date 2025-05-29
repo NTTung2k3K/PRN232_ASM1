@@ -74,7 +74,7 @@ namespace Services
         public async Task<bool> Delete(int id)
         {
             // Check user in articles
-            var articles =  _newsArticleRepository.GetAll();
+            var articles = await _newsArticleRepository.GetAll();
             if (articles.Any(x => x.CreatedById == id))
             {
                 throw new InvalidOperationException("Cannot delete account because it is associated with existing articles.");

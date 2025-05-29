@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ISystemAccountService, SystemAccountService>();
+builder.Services.AddScoped<INewsArticleService, NewsArticleService>();
 
 
 
