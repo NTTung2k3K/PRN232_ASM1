@@ -84,16 +84,15 @@ namespace Repositories.Base
 
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int id, bool detach = true)
         {
             var entity = await _context.Set<T>().FindAsync(id);
-            if (entity != null)
+            if (entity != null && detach)
             {
                 _context.Entry(entity).State = EntityState.Detached;
             }
 
             return entity;
-
         }
 
         public T GetById(string code)
@@ -120,30 +119,27 @@ namespace Repositories.Base
 
         }
 
-        public T GetById(Guid code)
-        {
-            var entity = _context.Set<T>().Find(code);
-            if (entity != null)
-            {
-                _context.Entry(entity).State = EntityState.Detached;
-            }
-
-            return entity;
-
-        }
-
-        public async Task<T> GetByIdAsync(Guid code)
+        public async Task<T> GetByIdAsync(string code, bool detach = true)
         {
             var entity = await _context.Set<T>().FindAsync(code);
-            if (entity != null)
+            if (entity != null && detach)
             {
                 _context.Entry(entity).State = EntityState.Detached;
             }
 
             return entity;
-
         }
 
+        public async Task<T> GetByIdAsync(Guid code, bool detach = true)
+        {
+            var entity = await _context.Set<T>().FindAsync(code);
+            if (entity != null && detach)
+            {
+                _context.Entry(entity).State = EntityState.Detached;
+            }
+
+            return entity;
+        }
     }
 
 }
