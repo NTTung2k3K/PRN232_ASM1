@@ -12,7 +12,22 @@ namespace Repositories
     public class NewsArticleRepository : GenericRepository<NewsArticle>
     {
         public NewsArticleRepository() { }
+        public async Task<NewsArticle> GetByIdWithTrackingAsync(string id)
+        {
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            return await _context.NewsArticles
+                .Include(x => x.Tags)
+                .Include(x => x.Category)
+                .Include(x => x.CreatedBy)
+                .FirstOrDefaultAsync(x => x.NewsArticleId == id);
+        }
 
+        public async Task<int> UpdateWithTrackingAsync(NewsArticle entity)
+        {
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            _context.NewsArticles.Update(entity);
+            return await _context.SaveChangesAsync();
+        }
         public async Task<List<NewsArticle>> GetAll()
         {
             return await _context.NewsArticles

@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class CategoryRepository: GenericRepository<Tag>
+    public class CategoryRepository: GenericRepository<Category>
     {
         public CategoryRepository() { }
-        public async Task<List<Tag>> GetAll()
+        public async Task<List<Category>> GetAll()
         {
-            return await _context.Tags.ToListAsync();
+            return await _context.Categories.ToListAsync();
         }
 
-        public async Task<Tag> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            return await _context.Tags.FirstOrDefaultAsync(x => x.TagId == id);
+            return await _context.Categories.FirstOrDefaultAsync(x => x.CategoryId == id);
         }
     }
 

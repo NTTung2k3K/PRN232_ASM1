@@ -136,16 +136,7 @@ namespace Repositories.Base
             return entity;
         }
 
-        public async Task<T> GetByIdAsync(Guid code, bool detach = true)
-        {
-            var entity = await _context.Set<T>().FindAsync(code);
-            if (entity != null && detach)
-            {
-                _context.Entry(entity).State = EntityState.Detached;
-            }
-
-            return entity;
-        }
+       
     }
 
 }
