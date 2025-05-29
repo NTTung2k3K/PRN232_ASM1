@@ -12,9 +12,17 @@ public class TagRepository : GenericRepository<Tag>
         return await _context.Tags.ToListAsync();
     }
 
-    public async Task<Tag> GetByIdAsync(int id)
+    public async Task<Tag> GetByIdAsync(int id, bool tracked = true)
     {
-        return await _context.Tags.FirstOrDefaultAsync(x => x.TagId == id);
+        if (tracked)
+        {
+            return await _context.Tags.FirstOrDefaultAsync(x => x.TagId == id);
+        }
+        else
+        {
+            var tag = await _context.Tags.AsNoTracking().FirstOrDefaultAsync(x => x.TagId == id);
+            return tag;
+        }
     }
 
     public async Task<List<Tag>> FindByConditionAsync(Expression<Func<Tag, bool>> predicate)

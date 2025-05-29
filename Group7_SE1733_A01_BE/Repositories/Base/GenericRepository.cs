@@ -30,6 +30,12 @@ namespace Repositories.Base
         {
             return await _context.Set<T>().ToListAsync();
         }
+
+        public IQueryable<T> GetQueryable()
+        {
+            return _context.Set<T>();
+        }
+
         public void Create(T entity)
         {
             _context.Add(entity);

@@ -1,4 +1,5 @@
 ﻿using Group7_SE1733_A01_BE.Service.DTOs;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Repositories;
 using Repositories.Models;
@@ -11,7 +12,7 @@ namespace Services
         Task<List<NewsArticle>> GetAll();
         Task<NewsArticle> GetById(string id);
         Task<int> Create(NewsArticleCreateDTO dto);
-        Task<int> Update(string id, NewsArticleDTO dto);
+        Task<int> Update(string id, NewsArticleUpdateDTO dto);
         Task<bool> Delete(string id);
         Task<List<NewsArticle>> SearchByStatus(int status);
     }
@@ -105,15 +106,12 @@ namespace Services
                         Note = tagDto.Note
                     };
 
-                    // Cập nhật lại danh sách ID đã dùng để tránh trùng
                     existingIds.Add(nextAvailableId);
                     nextAvailableId++;
 
                     tagsToAdd.Add(newTag);
                 }
             }
-
-
 
             var article = new NewsArticle
             {
@@ -134,7 +132,7 @@ namespace Services
 
 
 
-        public async Task<int> Update(string id, NewsArticleDTO dto)
+        public async Task<int> Update(string id, NewsArticleUpdateDTO dto)
         {
             var existing = await _newsArticleRepository.GetByIdAsync(id);
             if (existing == null)
@@ -157,14 +155,12 @@ namespace Services
             if (category == null)
                 throw new InvalidOperationException($"Category with ID {dto.CategoryId} does not exist.");
 
-            if (dto.NewsStatus is not true and not false)
-                throw new ArgumentException("NewsStatus must be either true (1) or false (0)");
-
-            // Validate CreatedById (phải tồn tại trong bảng SystemAccount)
+            // Validate UpdatedById
             var account = await _systemAccountRepository.GetByIdAsync((int)dto.UpdatedById);
             if (account == null)
                 throw new InvalidOperationException($"SystemAccount with ID {dto.UpdatedById} does not exist.");
 
+            // Update core properties
             existing.NewsTitle = dto.NewsTitle;
             existing.Headline = dto.Headline;
             existing.NewsContent = dto.NewsContent;
@@ -174,39 +170,85 @@ namespace Services
             existing.UpdatedById = dto.UpdatedById;
             existing.ModifiedDate = dto.ModifiedDate ?? DateTime.Now;
 
-            // Xử lý Tags
-            var newTags = new List<Tag>();
-            foreach (var tagDto in dto.Tags)
+            var existingTagsAll = await _tagRepository.GetAll();
+            var existingTagsDict = existingTagsAll.ToDictionary(t => t.TagId, t => t);
+
+            var tagsToAdd = new List<Tag>();
+
+            if (dto.Tags != null)
             {
-                var existingTag = await _tagRepository.FindByConditionAsync(t => t.TagName == tagDto.TagName);
-                var tag = existingTag.FirstOrDefault();
-
-                if (tag == null)
+                foreach (var tagDto in dto.Tags)
                 {
-                    tag = new Tag
+                    if (tagDto.TagId > 0)
                     {
-                        TagName = tagDto.TagName,
-                        Note = tagDto.Note
-                    };
-                    await _tagRepository.CreateAsync(tag);
-                }
+                        if (existingTagsDict.TryGetValue(tagDto.TagId, out var existingTag))
+                        {
+                            // Tag đã có trong DB, update info
+                            existingTag.TagName = tagDto.TagName;
+                            existingTag.Note = tagDto.Note;
+                            await _tagRepository.UpdateAsync(existingTag);
+                            tagsToAdd.Add(existingTag);
+                        }
+                        else
+                        {
+                            // TagId tồn tại trong dto nhưng chưa có trong DB -> tạo mới với TagId do user cung cấp
+                            var newTag = new Tag
+                            {
+                                TagId = tagDto.TagId,  // gán ID do user cung cấp
+                                TagName = tagDto.TagName,
+                                Note = tagDto.Note
+                            };
+                            await _tagRepository.CreateAsync(newTag);
 
-                newTags.Add(tag);
+                            tagsToAdd.Add(newTag);
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException("TagId must be provided by the user and greater than zero.");
+                    }
+                }
             }
 
-            existing.Tags = newTags;
+            existing.Tags = tagsToAdd;
 
+            // Cập nhật bài viết
             return await _newsArticleRepository.UpdateAsync(existing);
         }
 
 
         public async Task<bool> Delete(string id)
         {
-            var item = await _newsArticleRepository.GetByIdAsync(id);
-            if (item == null) return false;
+            var article = await _newsArticleRepository
+                .GetQueryable()
+                .Include(a => a.Tags)
+                .FirstOrDefaultAsync(a => a.NewsArticleId == id);
 
-            return await _newsArticleRepository.RemoveAsync(item);
+            if (article == null) return false;
+
+            var relatedTags = article.Tags.ToList();
+
+            // Xóa bài viết
+            var deleted = await _newsArticleRepository.RemoveAsync(article);
+            if (!deleted) return false;
+
+            foreach (var tag in relatedTags)
+            {
+                var stillUsed = await _newsArticleRepository
+                    .GetQueryable()
+                    .AnyAsync(a => a.Tags.Any(t => t.TagId == tag.TagId));
+
+                if (!stillUsed)
+                {
+                    await _tagRepository.RemoveAsync(tag);
+                }
+            }
+
+            return true;
         }
+
+
+
 
         public async Task<List<NewsArticle>> SearchByStatus(int status)
         {
