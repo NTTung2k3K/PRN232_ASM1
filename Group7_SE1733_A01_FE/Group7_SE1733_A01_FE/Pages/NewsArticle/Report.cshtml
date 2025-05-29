@@ -1,0 +1,74 @@
+﻿@page
+@model Group7_SE1733_A01_FE.Pages.NewsArticle.ReportModel
+@{
+    ViewData["Title"] = "Report";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>News Report</h2>
+
+<form method="get" class="mb-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label>Start Date</label>
+        <input type="datetime-local" name="StartDate" class="form-control" value="@Request.Query["StartDate"]" />
+    </div>
+    <div class="form-group">
+        <label>End Date</label>
+        <input type="datetime-local" name="EndDate" class="form-control" value="@Request.Query["EndDate"]" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Generate Report</button>
+</form>
+
+@if (Model.ReportData != null && Model.ReportData.Any())
+{
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Created Date</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Tags</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ReportData != null)
+            {
+
+                foreach (var item in Model.ReportData)
+                {
+                    <tr>
+                        <td>@item.NewsTitle</td>
+                        <td>@item.CreatedDate</td>
+                        @if (item.Category != null)
+                        {
+                            <td>@item.Category.CategoryName</td>
+                        }
+                        else
+                        {
+                            <td>Unknown Category</td>
+                        }
+
+                        @if (item.CreatedBy != null)
+                        {
+                            <td>@item.CreatedBy.AccountName</td>
+                        }
+                        else
+                        {
+                            <td>Unknown Author</td>
+                        }
+
+                        <td>@string.Join(", ", item.Tags.Select(x => x.TagName))</td>
+                    </tr>
+                }
+
+            }
+            else
+            {
+                <p>Không có dữ liệu để hiển thị.</p>
+            }
+        </tbody>
+    </table>
+}

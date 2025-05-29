@@ -59,6 +59,19 @@ namespace Group7_SE1733_A01_BE.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<SystemAccount>>> GetSystemAccounts([FromQuery] string? AccountName, [FromQuery] string? AccountEmail, [FromQuery] bool? IsSortDescByAccountName)
+        {
+            try
+            {
+                var rs =  await _systemAccountService.Search(AccountName, AccountEmail, IsSortDescByAccountName);
+                return Ok(rs);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         // GET: api/SystemAccounts/5
         [HttpGet("{id}")]

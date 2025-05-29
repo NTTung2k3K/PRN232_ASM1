@@ -16,9 +16,19 @@ namespace Repositories
         public async Task<List<NewsArticle>> GetAll()
         {
             return await _context.NewsArticles
+                .Include(x => x.Category)
                 .Include(x => x.Tags)
+                .Include(x => x.CreatedBy)
                 .OrderBy(x => x.CreatedDate)
                 .ToListAsync();
+        }
+        public async Task<IQueryable<NewsArticle>> GetAllAsQueryable()
+        {
+            return  _context.NewsArticles
+                .Include(x => x.Category)
+                .Include(x => x.Tags)
+                .Include(x => x.CreatedBy)
+                .AsQueryable();
         }
 
         public async Task<NewsArticle> GetByIdAsync(string id)

@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Repositories.Models;
 
@@ -18,6 +19,7 @@ public partial class Category
     public bool? IsActive { get; set; }
 
     public virtual ICollection<Category> InverseParentCategory { get; set; } = new List<Category>();
+    [JsonIgnore]
 
     public virtual ICollection<NewsArticle> NewsArticles { get; set; } = new List<NewsArticle>();
 

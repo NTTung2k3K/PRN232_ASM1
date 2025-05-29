@@ -27,18 +27,24 @@ namespace Repositories
             var items = await _context.SystemAccounts.ToListAsync();
             return items;
         }
-        public async Task<List<SystemAccount>> Search(string AccountName, string AccountEmail)
+        public async Task<List<SystemAccount>> Search(string? AccountName, string? AccountEmail, bool? IsSortDescByAccountName)
         {
 
             AccountName = AccountName?.Trim();
             AccountEmail = AccountEmail?.Trim();
+            var IsSortDescByAccountNameValue = IsSortDescByAccountName ?? false;
 
             var items = await _context.SystemAccounts
                 .Where(x =>
                 (
                 x.AccountName.Contains(AccountName) || string.IsNullOrEmpty(AccountName))
                 && (x.AccountEmail.Contains(AccountEmail) || string.IsNullOrEmpty(AccountEmail))
-                ).ToListAsync();
+                )
+                
+                .ToListAsync();
+
+            items = IsSortDescByAccountNameValue ? items.OrderByDescending(x => x.AccountName).ToList() : items.OrderBy(x => x.AccountName).ToList();
+
             return items;
         }
         public async Task<SystemAccount> GetByIdAsync(int id)

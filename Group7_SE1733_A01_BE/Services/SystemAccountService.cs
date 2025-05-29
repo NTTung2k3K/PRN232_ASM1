@@ -12,7 +12,7 @@ namespace Services
         Task<int> Create(SystemAccountDTO SystemAccount);
         Task<int> Update(short id, SystemAccountDTO SystemAccount);
         Task<bool> Delete(int id);
-        Task<List<SystemAccount>> Search(string AccountName, string AccountEmail);
+        Task<List<SystemAccount>> Search(string? AccountName, string? AccountEmail, bool? IsSortDescByAccountName);
         Task<SystemAccount> GetUserAccountAsync(string email, string password);
 
     }
@@ -99,9 +99,9 @@ namespace Services
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task<List<SystemAccount>> Search(string AccountName, string AccountEmail)
+        public async Task<List<SystemAccount>> Search(string? AccountName, string? AccountEmail, bool? IsSortDescByAccountName)
         {
-            return await _repository.Search(AccountName, AccountEmail);
+            return await _repository.Search(AccountName, AccountEmail,IsSortDescByAccountName);
         }
 
         public async Task<int> Update(short AccountId, SystemAccountDTO SystemAccount)

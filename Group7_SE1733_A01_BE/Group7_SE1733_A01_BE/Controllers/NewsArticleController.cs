@@ -114,5 +114,22 @@ namespace Group7_SE1733_A01_BE.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpGet("report")]
+        public async Task<ActionResult<IEnumerable<NewsArticle>>> GetReportAsync([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        {
+            try
+            {
+                if (startDate == null && endDate == null)
+                {
+                    return BadRequest("You must provide at least one of startDate or endDate.");
+                }
+                var result = await _newsArticleService.GetReportAsync(startDate, endDate);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

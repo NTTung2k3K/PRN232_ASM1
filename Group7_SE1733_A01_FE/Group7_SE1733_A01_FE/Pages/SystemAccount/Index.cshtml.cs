@@ -23,10 +23,10 @@ namespace Group7_SE1733_A01_FE.Pages.SystemAccount
 
         public IList<SystemAccountDTO> SystemAccount { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string AccountName, string AccountEmail, bool IsSortDescByAccountName)
         {
             var client = _httpClientFactory.CreateClient("MyApi");
-            var response = await client.GetAsync("api/SystemAccounts/get-all");
+            var response = await client.GetAsync($"api/SystemAccounts/search?AccountName={AccountName}&AccountEmail={AccountEmail}&IsSortDescByAccountName={IsSortDescByAccountName}");
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<List<SystemAccountDTO>>();

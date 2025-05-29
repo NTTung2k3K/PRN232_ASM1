@@ -1,4 +1,5 @@
 ﻿using Group7_SE1733_A01_BE.Service.DTOs;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Repositories;
 using Repositories.Models;
@@ -14,6 +15,8 @@ namespace Services
         Task<int> Update(string id, NewsArticleDTO dto);
         Task<bool> Delete(string id);
         Task<List<NewsArticle>> SearchByStatus(int status);
+        Task<List<NewsArticle>> GetReportAsync(DateTime? startDate, DateTime? endDate);
+
     }
 
     public class NewsArticleService : INewsArticleService
@@ -212,6 +215,25 @@ namespace Services
         {
             if (status != 0 && status != 1) throw new ArgumentException("Status must be 0 or 1");
             return await _newsArticleRepository.SearchByStatus(status == 1);
+        }
+
+        public async Task<List<NewsArticle>> GetReportAsync(DateTime? startDate, DateTime? endDate)
+        {
+            var query = await _newsArticleRepository.GetAllAsQueryable();
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(n => n.CreatedDate >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                query = query.Where(n => n.CreatedDate <= endDate.Value);
+            }
+
+            return await query
+                .OrderByDescending(n => n.CreatedDate)
+                .ToListAsync();
         }
     }
 }

@@ -7,10 +7,49 @@
 }
 
 <h1>Index</h1>
+<form method="get">
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label">AccountName</label>
+                <input id="AccountName" type="text" name="AccountName" class="form-control" value="@Request.Query["AccountName"]" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label">AccountEmail</label>
+                <input id="AccountEmail" type="text" name="AccountEmail" class="form-control" value="@Request.Query["AccountEmail"]" />
+
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label">Sort By AccountName</label>
+                <button class="form-control w-50 bg-info" type="submit" name="IsSortDescByAccountName" value="@(Request.Query["IsSortDescByAccountName"] == "true"  ? "false" : "true")">
+                    @if (bool.TryParse(Request.Query["IsSortDescByAccountName"], out bool isSortDescByAccountNameId) && isSortDescByAccountNameId)
+                    {
+                        <span>&#8595;  &nbsp; Desc</span>
+                    }
+                    else
+                    {
+                        <span>&#8593; &nbsp; Asc</span>
+                    }
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-3 mt-4">
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-success" />
+                <a class="btn  btn-primary " asp-page="Create">Create New</a>
+            </div>
+        </div>
+    </div>
+
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -29,7 +68,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="idTBody">
 @foreach (var item in Model.SystemAccount) {
         <tr>
             <td>
@@ -53,3 +92,7 @@
 }
     </tbody>
 </table>
+@section Scripts {
+ 
+<script src="~/js/paging.js"></script>
+}
