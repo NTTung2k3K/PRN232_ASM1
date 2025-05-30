@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Repositories.Models;
 
@@ -31,6 +32,7 @@ public partial class NewsArticle
 
     public virtual Category Category { get; set; }
 
+    [JsonIgnore]
     public virtual SystemAccount CreatedBy { get; set; }
 
     public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();

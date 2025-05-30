@@ -1,6 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Group7_SE1733_A01_FE.DTOs
+namespace Services.DTOs
 {
     public class TagDTO
     {
@@ -9,25 +13,21 @@ namespace Group7_SE1733_A01_FE.DTOs
         public string TagName { get; set; }
 
         public string Note { get; set; }
-
     }
 
     public class TagCreateDTO
     {
-        [Required(ErrorMessage = "TagId is required.")]
         public int TagId { get; set; }
 
-        [Required(ErrorMessage = "TagName is required.")]
         public string TagName { get; set; }
-        [MaxLength(500, ErrorMessage = "Note cannot exceed 500 characters.")]
+
         public string Note { get; set; }
     }
 
     public class TagUpdateDTO
     {
-        [Required(ErrorMessage = "TagName is required.")]
         public string TagName { get; set; }
-        [MaxLength(500, ErrorMessage = "Note cannot exceed 500 characters.")]
+
         public string Note { get; set; }
     }
 }

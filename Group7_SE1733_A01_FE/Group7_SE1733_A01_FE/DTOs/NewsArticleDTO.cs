@@ -31,7 +31,9 @@ namespace Group7_SE1733_A01_FE.DTOs
 
         public virtual SystemAccountDTO? CreatedBy { get; set; }
 
-        public virtual ICollection<TagDTO> Tags { get; set; } = new List<TagDTO>();
+        public List<int> TagIds { get; set; } = new List<int>();
+
+        public List<TagDTO> Tags { get; set; } = new List<TagDTO>();
     }
 
     public class NewsArticleCreateDTO
@@ -58,10 +60,9 @@ namespace Group7_SE1733_A01_FE.DTOs
         [Required(ErrorMessage = "NewsStatus is required.")]
         public bool? NewsStatus { get; set; }
 
-        [Required(ErrorMessage = "CreatedById is required.")]
         public short? CreatedById { get; set; }
 
-        public List<TagCreateDTO> Tags { get; set; } = new List<TagCreateDTO>();
+        public List<int> TagIds { get; set; } = new List<int>();
     }
 
     public class NewsArticleUpdateDTO
@@ -86,11 +87,12 @@ namespace Group7_SE1733_A01_FE.DTOs
         [Required(ErrorMessage = "NewsStatus is required.")]
         public bool? NewsStatus { get; set; }
 
-        [Required(ErrorMessage = "UpdatedById is required.")]
         public short? UpdatedById { get; set; }
 
         public DateTime? ModifiedDate { get; set; }
 
-        public List<TagDTO> Tags { get; set; } = new List<TagDTO>();
+        public List<TagDTO>? Tags { get; set; }
+
+        public List<int> TagIds { get; set; } = new List<int>();
     }
 }

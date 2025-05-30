@@ -1,127 +1,302 @@
 ﻿@page
 @model Group7_SE1733_A01_FE.Pages.NewsArticle.EditModel
-
 @{
     ViewData["Title"] = "Edit News Article";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Edit News Article</h1>
 
-<h4>NewsArticle</h4>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="NewsArticle.NewsArticleId" />
+<form method="post" id="editForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="NewsArticle.NewsTitle" class="control-label"></label>
-                <input asp-for="NewsArticle.NewsTitle" class="form-control" />
-                <span asp-validation-for="NewsArticle.NewsTitle" class="text-danger"></span>
-            </div>
+    <input type="hidden" asp-for="NewsArticle.NewsArticleId" />
 
-            <div class="form-group">
-                <label asp-for="NewsArticle.Headline" class="control-label"></label>
-                <input asp-for="NewsArticle.Headline" class="form-control" />
-                <span asp-validation-for="NewsArticle.Headline" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="NewsArticle.NewsContent" class="control-label"></label>
-                <textarea asp-for="NewsArticle.NewsContent" class="form-control"></textarea>
-                <span asp-validation-for="NewsArticle.NewsContent" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="NewsArticle.NewsSource" class="control-label"></label>
-                <input asp-for="NewsArticle.NewsSource" class="form-control" />
-                <span asp-validation-for="NewsArticle.NewsSource" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="NewsArticle.NewsStatus" class="control-label"></label>
-                <select asp-for="NewsArticle.NewsStatus" class="form-control">
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
-                </select>
-                <span asp-validation-for="NewsArticle.NewsStatus" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="NewsArticle.CategoryId" class="control-label"></label>
-                <select asp-for="NewsArticle.CategoryId" class="form-control">
-                    @foreach (var cat in Model.Categories)
-                    {
-                        <option value="@cat.CategoryId">@cat.CategoryName</option>
-                    }
-                </select>
-                <span asp-validation-for="NewsArticle.CategoryId" class="text-danger"></span>
-            </div>
-
-            <hr />
-            <h5>Edit Tags</h5>
-            <div id="tag-container">
-                @for (int i = 0; i < Model.NewsArticle.Tags.Count; i++)
-                {
-                    <input type="hidden" asp-for="NewsArticle.Tags[@i].TagId" />
-
-                    <div class="form-group">
-                        <label>Tag Name</label>
-                        <input asp-for="NewsArticle.Tags[@i].TagName" class="form-control" />
-                        <span asp-validation-for="NewsArticle.Tags[@i].TagName" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Note</label>
-                        <input asp-for="NewsArticle.Tags[@i].Note" class="form-control" />
-                        <span asp-validation-for="NewsArticle.Tags[@i].Note" class="text-danger"></span>
-                    </div>
-
-                    <hr />
-                }
-            </div>
-
-            <button type="button" class="btn btn-secondary" onclick="addTag()">Add Tag</button>
-
-            <div class="form-group">
-                <label asp-for="NewsArticle.ModifiedDate" class="control-label"></label>
-                <input asp-for="NewsArticle.ModifiedDate" type="datetime-local" class="form-control" />
-                <span asp-validation-for="NewsArticle.ModifiedDate" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mt-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
-            </div>
-        </form>
+    <div class="form-group mb-3">
+        <label asp-for="NewsArticle.NewsTitle" class="control-label"></label>
+        <input asp-for="NewsArticle.NewsTitle" class="form-control" />
+        <span asp-validation-for="NewsArticle.NewsTitle" class="text-danger"></span>
     </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="NewsArticle.Headline" class="control-label"></label>
+        <input asp-for="NewsArticle.Headline" class="form-control" />
+        <span asp-validation-for="NewsArticle.Headline" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="NewsArticle.NewsContent" class="control-label"></label>
+        <textarea asp-for="NewsArticle.NewsContent" class="form-control" rows="6"></textarea>
+        <span asp-validation-for="NewsArticle.NewsContent" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="NewsArticle.NewsSource" class="control-label"></label>
+        <input asp-for="NewsArticle.NewsSource" class="form-control" />
+        <span asp-validation-for="NewsArticle.NewsSource" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="NewsArticle.CategoryId" class="control-label"></label>
+        <select asp-for="NewsArticle.CategoryId" class="form-control" asp-items="Model.CategoryOptions">
+            <option value="">-- Select Category --</option>
+        </select>
+        <span asp-validation-for="NewsArticle.CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="NewsArticle.NewsStatus" class="control-label"></label>
+        <select asp-for="NewsArticle.NewsStatus" class="form-control">
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+        </select>
+        <span asp-validation-for="NewsArticle.NewsStatus" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="NewsArticle.ModifiedDate" class="control-label"></label>
+        <input asp-for="NewsArticle.ModifiedDate" class="form-control" type="datetime-local" />
+        <span asp-validation-for="NewsArticle.ModifiedDate" class="text-danger"></span>
+    </div>
+
+    <!-- Hidden fields for UpdatedById -->
+    <input asp-for="NewsArticle.UpdatedById" type="hidden" />
+
+    <div class="form-group mb-3">
+        <label class="control-label">Select Tags</label>
+        <div id="tagContainer">
+            <!-- Tag dropdowns will be added here dynamically -->
+        </div>
+        <button type="button" id="addTagBtn" class="btn btn-secondary btn-sm mt-2">+ Add Tag</button>
+    </div>
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Update News Article</button>
+        <a asp-page="./Details" asp-route-id="@Model.NewsArticle.NewsArticleId" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<div class="mt-3">
+    <a asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
     <script>
-        let tagIndex = @Model.NewsArticle.Tags.Count;
+        let tagIndex = 0;
+        let allTags = [];
+        let existingTagIds = [];
 
-        function addTag() {
-            const container = document.getElementById("tag-container");
-
-            const tagHtml = `
-                <input type="hidden" name="NewsArticle.Tags[${tagIndex}].TagId" value="0" />
-                <div class="form-group">
-                    <label>Tag Name</label>
-                    <input name="NewsArticle.Tags[${tagIndex}].TagName" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Note</label>
-                    <input name="NewsArticle.Tags[${tagIndex}].Note" class="form-control" />
-                </div>
-                <hr />
-            `;
-
-            container.insertAdjacentHTML("beforeend", tagHtml);
-            tagIndex++;
+        // Get tags data from server
+        @if (Model.AllTags != null && Model.AllTags.Any())
+        {
+            <text>
+                allTags = [
+                @for (int i = 0; i < Model.AllTags.Count; i++)
+                {
+                    <text>
+                            {
+                                tagId: @Model.AllTags[i].TagId,
+                                tagName: "@Html.Raw(Model.AllTags[i].TagName.Replace("\"", "\\\""))"
+                            }@(i < Model.AllTags.Count - 1 ? "," : "")
+                    </text>
+                }
+                ];
+            </text>
         }
+
+        // Get existing tag IDs
+        @if (Model.ExistingTagIds != null && Model.ExistingTagIds.Any())
+        {
+            <text>
+                existingTagIds = [@string.Join(",", Model.ExistingTagIds)];
+            </text>
+        }
+
+        console.log('All tags loaded:', allTags);
+        console.log('Existing tag IDs:', existingTagIds);
+
+        function getSelectedTagIds() {
+            const selectedTagIds = [];
+            document.querySelectorAll('.tag-select').forEach(select => {
+                const value = parseInt(select.value);
+                if (value > 0) {
+                    selectedTagIds.push(value);
+                }
+            });
+            return selectedTagIds;
+        }
+
+        function getAvailableTags(excludeCurrentSelect = null) {
+            const selectedTagIds = [];
+            document.querySelectorAll('.tag-select').forEach(select => {
+                if (select !== excludeCurrentSelect) {
+                    const value = parseInt(select.value);
+                    if (value > 0) {
+                        selectedTagIds.push(value);
+                    }
+                }
+            });
+
+            return allTags.filter(tag => !selectedTagIds.includes(tag.tagId));
+        }
+
+        function createTagDropdown(selectedTagId = 0) {
+            const tagDiv = document.createElement('div');
+            tagDiv.className = 'tag-item mb-2 d-flex align-items-center';
+
+            const select = document.createElement('select');
+            select.className = 'form-control tag-select me-2';
+            select.name = `TagIds[${tagIndex}]`;
+            select.addEventListener('change', function() {
+                updateAllDropdowns();
+            });
+
+            // Add default option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '0';
+            defaultOption.textContent = '-- Select Tag --';
+            select.appendChild(defaultOption);
+
+            // Get available tags (excluding already selected ones)
+            const availableTags = getAvailableTags();
+
+            // Add available tags
+            availableTags.forEach(tag => {
+                const option = document.createElement('option');
+                option.value = tag.tagId;
+                option.textContent = tag.tagName;
+                if (tag.tagId === selectedTagId) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+
+            // If selectedTagId is provided and not in available tags, add it anyway
+            if (selectedTagId > 0) {
+                const selectedTag = allTags.find(tag => tag.tagId === selectedTagId);
+                if (selectedTag && !availableTags.find(tag => tag.tagId === selectedTagId)) {
+                    const option = document.createElement('option');
+                    option.value = selectedTag.tagId;
+                    option.textContent = selectedTag.tagName;
+                    option.selected = true;
+                    select.appendChild(option);
+                }
+            }
+
+            // Add remove button
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'btn btn-danger btn-sm';
+            removeBtn.textContent = 'Remove';
+            removeBtn.addEventListener('click', function() {
+                tagDiv.remove();
+                updateAllDropdowns();
+            });
+
+            tagDiv.appendChild(select);
+            tagDiv.appendChild(removeBtn);
+
+            tagIndex++;
+            return tagDiv;
+        }
+
+        function updateAllDropdowns() {
+            const tagSelects = document.querySelectorAll('.tag-select');
+
+            tagSelects.forEach(currentSelect => {
+                const currentValue = parseInt(currentSelect.value);
+                const availableTags = getAvailableTags(currentSelect);
+
+                // Clear and rebuild options
+                currentSelect.innerHTML = '';
+
+                // Add default option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '0';
+                defaultOption.textContent = '-- Select Tag --';
+                currentSelect.appendChild(defaultOption);
+
+                // Add available tags
+                availableTags.forEach(tag => {
+                    const option = document.createElement('option');
+                    option.value = tag.tagId;
+                    option.textContent = tag.tagName;
+                    currentSelect.appendChild(option);
+                });
+
+                // Add current selected tag if it's not in available tags
+                if (currentValue > 0) {
+                    const currentTag = allTags.find(tag => tag.tagId === currentValue);
+                    if (currentTag && !availableTags.find(tag => tag.tagId === currentValue)) {
+                        const option = document.createElement('option');
+                        option.value = currentTag.tagId;
+                        option.textContent = currentTag.tagName;
+                        currentSelect.appendChild(option);
+                    }
+                    currentSelect.value = currentValue;
+                }
+            });
+        }
+
+        // Add tag button event
+        document.getElementById('addTagBtn').addEventListener('click', function() {
+            if (allTags.length === 0) {
+                alert('No tags available. Please check if tags are loaded properly.');
+                return;
+            }
+
+            // Check if all tags are already selected
+            const selectedTagIds = getSelectedTagIds();
+            if (selectedTagIds.length >= allTags.length) {
+                alert('All available tags have been selected.');
+                return;
+            }
+
+            const tagContainer = document.getElementById('tagContainer');
+            const newTagDropdown = createTagDropdown();
+            tagContainer.appendChild(newTagDropdown);
+            updateAllDropdowns();
+        });
+
+        // Form submission validation
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            // Remove any empty tag selects before submission
+            document.querySelectorAll('.tag-select').forEach(select => {
+                if (select.value === '0') {
+                    select.name = ''; // Remove name so it won't be submitted
+                }
+            });
+        });
+
+        // Initialize with existing tags
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing tags...');
+            console.log('Available tags:', allTags);
+            console.log('Existing tags:', existingTagIds);
+
+            if (allTags.length > 0) {
+                const tagContainer = document.getElementById('tagContainer');
+
+                // Add dropdowns for existing tags
+                if (existingTagIds.length > 0) {
+                    existingTagIds.forEach(tagId => {
+                        const tagDropdown = createTagDropdown(tagId);
+                        tagContainer.appendChild(tagDropdown);
+                    });
+                    updateAllDropdowns();
+                } else {
+                    // Add one empty dropdown if no existing tags
+                    const initialTagDropdown = createTagDropdown();
+                    tagContainer.appendChild(initialTagDropdown);
+                }
+            } else {
+                console.error('No tags loaded!');
+                document.getElementById('addTagBtn').style.display = 'none';
+                const tagContainer = document.getElementById('tagContainer');
+                tagContainer.innerHTML = '<div class="alert alert-warning">No tags available. Please contact administrator.</div>';
+            }
+        });
     </script>
 }
