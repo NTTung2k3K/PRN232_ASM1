@@ -34,7 +34,7 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model.ReportData != null)
+            @if (Model.ReportData.Count > 0)
             {
 
                 foreach (var item in Model.ReportData)
@@ -65,10 +65,11 @@
                 }
 
             }
-            else
-            {
-                <p>Không có dữ liệu để hiển thị.</p>
-            }
+           
         </tbody>
     </table>
+}
+else
+{
+    <p>Không có dữ liệu để hiển thị.</p>
 }
