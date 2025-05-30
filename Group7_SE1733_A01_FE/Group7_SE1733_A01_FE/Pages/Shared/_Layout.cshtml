@@ -25,26 +25,37 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/SystemAccount/Index">SystemAccount</a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/NewsArticle/Index">NewsArticle</a>
-                        </li>
+                        @if (Context.Request.Cookies["Role"] == "0")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/SystemAccount/Index">SystemAccount</a>
+                            </li>
+                        }
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/NewsArticle/History">NewsHistory</a>
-                        </li>
+                        @if (Context.Request.Cookies["Role"] == "1")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/NewsArticle/Index">NewsArticle</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Category/Index">Category</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/NewsArticle/History">NewsHistory</a>
+                            </li>
+                        }
                     </ul>
                 </div>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <div class="nav-item text-nowrap">
                         Welcome
-                        <strong>@Context.Request.Cookies["Email"].ToString()</strong>
-                        <a asp-page="/Auth/Logout">Logout</a>
+                        <strong>@Context.Request.Cookies["Email"]</strong>
+                        <a class="nav-link d-inline text-dark" asp-page="/Auth/Logout">Logout</a>
                     </div>
                 </div>
+
 
             </div>
         </nav>

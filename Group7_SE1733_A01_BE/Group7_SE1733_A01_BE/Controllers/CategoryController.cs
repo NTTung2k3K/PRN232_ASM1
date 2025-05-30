@@ -46,5 +46,72 @@ namespace Group7_SE1733_A01_BE.Controllers
             }
         }
 
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] CategoryCreateDTO dto)
+        {
+            try
+            {
+                var result = await _categoryService.Create(dto);
+                if (result == 0) return BadRequest("Failed to create news category.");
+                return Ok("News category created successfully.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(short id, [FromBody] CategoryUpdateDTO dto)
+        {
+            try
+            {
+                var existing = await _categoryService.GetById(id);
+                if (existing == null) return NotFound("category not found.");
+
+                var result = await _categoryService.Update(id, dto);
+                if (result == 0) return BadRequest("Failed to update category.");
+                return Ok("category updated successfully.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(short id)
+        {
+            try
+            {
+                var existing = await _categoryService.GetById(id);
+                if (existing == null) return NotFound();
+
+                var result = await _categoryService.Delete(id);
+                if (!result) return BadRequest("Failed to delete article.");
+                return Ok("Category deleted successfully.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<NewsArticle>>> Search(
+           [FromQuery] string? CategoryName,
+           [FromQuery] string? CategoryDesciption)
+        {
+            try
+            {
+                var result = await _categoryService.Search(CategoryName, CategoryDesciption);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }
