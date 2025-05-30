@@ -55,6 +55,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.NewsArticles[0].NewsStatus)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticles[0].Category.CategoryName)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -76,6 +79,9 @@
                 </td>
                 <td>
                     @(item.NewsStatus == true ? "Active" : "Inactive")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.NewsArticleId">Edit</a> |

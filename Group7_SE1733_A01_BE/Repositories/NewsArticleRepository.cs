@@ -71,6 +71,7 @@ namespace Repositories
         {
             var items = await _context.NewsArticles
                 .Include(t => t.Tags)
+                .Include(x => x.Category)
                 .Where(i => (i.NewsTitle.ToString().Contains(NewsTitle) || string.IsNullOrEmpty(NewsTitle))
                 && (i.Headline.ToString().Contains(Headline) || string.IsNullOrEmpty(Headline))
                 && (i.NewsSource.ToString().Contains(NewsSource) || string.IsNullOrEmpty(NewsSource)))

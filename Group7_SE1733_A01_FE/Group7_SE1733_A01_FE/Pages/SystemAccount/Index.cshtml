@@ -69,30 +69,41 @@
         </tr>
     </thead>
     <tbody id="idTBody">
-@foreach (var item in Model.SystemAccount) {
+
+        @if (Model.SystemAccount != null && Model.SystemAccount.Count > 0)
+        {
+
+            foreach (var item in Model.SystemAccount)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountEmail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountRole)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountPassword)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.AccountId">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.AccountId">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.AccountId">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        }else{
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountRole)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountPassword)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.AccountId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.AccountId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.AccountId">Delete</a>
-            </td>
-        </tr>
-}
+            <td colspan="5" class="text-center">No records found</td>
+            }
+
     </tbody>
 </table>
 @section Scripts {
- 
-<script src="~/js/paging.js"></script>
+
+    <script src="~/js/paging.js"></script>
 }
