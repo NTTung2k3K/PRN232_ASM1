@@ -49,6 +49,7 @@ namespace Group7_SE1733_A01_FE.Pages.Auth
 
                     Response.Cookies.Append("Email", item.AccountEmail);
                     Response.Cookies.Append("Role", item.AccountRole.ToString());
+                    Response.Cookies.Append("Id", item.AccountId.ToString());
 
                     return RedirectToPage("/Index");
                 }

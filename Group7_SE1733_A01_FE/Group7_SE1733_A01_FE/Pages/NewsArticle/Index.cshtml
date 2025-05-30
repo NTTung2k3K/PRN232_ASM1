@@ -1,0 +1,92 @@
+﻿@page
+@model Group7_SE1733_A01_FE.Pages.NewsArticle.IndexModel
+
+@{
+    ViewData["Title"] = "News Articles";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>News Articles</h1>
+
+<form method="get">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label">News Title</label>
+                <input id="NewsTitle" type="text" name="NewsTitle" class="form-control" value="@Request.Query["NewsTitle"]" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label">Headline</label>
+                <input id="Headline" type="text" name="Headline" class="form-control" value="@Request.Query["Headline"]" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label">News Source</label>
+                <input id="NewsSource" type="text" name="NewsSource" class="form-control" value="@Request.Query["NewsSource"]" />
+            </div>
+        </div>
+        <div class="col-md-3 mt-4">
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-success" />
+                <a class="btn btn-primary" asp-page="Create">Create New</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticles[0].NewsTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticles[0].Headline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticles[0].NewsSource)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticles[0].CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewsArticles[0].NewsStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="idTBody">
+        @foreach (var item in Model.NewsArticles)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NewsTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Headline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NewsSource)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @(item.NewsStatus == true ? "Active" : "Inactive")
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.NewsArticleId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.NewsArticleId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.NewsArticleId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="~/js/paging.js"></script>
+}
