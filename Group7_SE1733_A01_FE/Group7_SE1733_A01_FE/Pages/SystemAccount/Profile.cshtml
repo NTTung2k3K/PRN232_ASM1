@@ -1,0 +1,42 @@
+﻿@page
+@model Group7_SE1733_A01_FE.Pages.SystemAccount.ProfileModel
+
+
+@{
+    ViewData["Title"] = "Update Profile";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Update Profile</h1>
+
+<h4>SystemAccount</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="text-success" >@TempData["SuccessMessage"]</div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SystemAccount.AccountId" />
+            <div class="form-group ">
+                <label asp-for="SystemAccount.AccountName" class="control-label"></label>
+                <input asp-for="SystemAccount.AccountName" class="form-control" />
+                <span asp-validation-for="SystemAccount.AccountName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemAccount.AccountEmail" class="control-label"></label>
+                <input asp-for="SystemAccount.AccountEmail" class="form-control" />
+                <span asp-validation-for="SystemAccount.AccountEmail" class="text-danger"></span>
+            </div>
+          
+            <div class="form-group">
+                <label asp-for="SystemAccount.AccountPassword" class="control-label"></label>
+                <input asp-for="SystemAccount.AccountPassword" class="form-control" />
+                <span asp-validation-for="SystemAccount.AccountPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

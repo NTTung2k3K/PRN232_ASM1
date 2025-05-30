@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Group7_SE1733_A01_BE.Models;
+using Group7_SE1733_A01_BE.Request;
 using Group7_SE1733_A01_BE.Service.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -114,6 +115,33 @@ namespace Group7_SE1733_A01_BE.Controllers
 
                 var rs = await _systemAccountService.Update(id,systemAccount);
                 if(rs == 0)
+                {
+                    return BadRequest("Failed to update account. Please check the input data.");
+                }
+                return Ok("Account updated successfully.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
+        [HttpPut("profile/{id}")]
+        public async Task<IActionResult> PutProfileSystemAccount(short id, UpdateProfileDTO systemAccount)
+        {
+
+
+
+            try
+            {
+                var existingAccount = await _systemAccountService.GetById(id);
+                if (existingAccount == null)
+                {
+                    return NotFound("Account not found.");
+                }
+
+                var rs = await _systemAccountService.UpdateProfile(id, systemAccount);
+                if (!rs)
                 {
                     return BadRequest("Failed to update account. Please check the input data.");
                 }
