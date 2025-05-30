@@ -2,6 +2,7 @@
 using Services;
 using Services.DTOs;
 using Repositories.Models;
+using Group7_SE1733_A01_FE.DTOs;
 
 namespace Group7_SE1733_A01_BE.Controllers
 {

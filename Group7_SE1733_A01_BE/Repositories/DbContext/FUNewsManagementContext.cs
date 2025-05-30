@@ -26,6 +26,8 @@ public partial class FUNewsManagementContext : DbContext
 
     public virtual DbSet<Tag> Tags { get; set; }
 
+    public virtual DbSet<NewsTag> NewsTag { get; set; }
+
     public static string GetConnectionString(string connectionStringName)
     {
         var config = new ConfigurationBuilder()
@@ -91,23 +93,30 @@ public partial class FUNewsManagementContext : DbContext
                 .HasConstraintName("FK_NewsArticle_SystemAccount");
 
             entity.HasMany(d => d.Tags).WithMany(p => p.NewsArticles)
-                .UsingEntity<Dictionary<string, object>>(
-                    "NewsTag",
-                    r => r.HasOne<Tag>().WithMany()
-                        .HasForeignKey("TagId")
+                .UsingEntity<NewsTag>(
+                    j => j
+                        .HasOne(nt => nt.Tag)
+                        .WithMany()
+                        .HasForeignKey(nt => nt.TagId)
+                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_NewsTag_Tag"),
-                    l => l.HasOne<NewsArticle>().WithMany()
-                        .HasForeignKey("NewsArticleId")
+                    j => j
+                        .HasOne(nt => nt.NewsArticle)
+                        .WithMany()
+                        .HasForeignKey(nt => nt.NewsArticleId)
+                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_NewsTag_NewsArticle"),
                     j =>
                     {
-                        j.HasKey("NewsArticleId", "TagId");
+                        j.HasKey(nt => new { nt.NewsArticleId, nt.TagId });
                         j.ToTable("NewsTag");
-                        j.IndexerProperty<string>("NewsArticleId")
+                        j.Property(nt => nt.NewsArticleId)
                             .HasMaxLength(20)
                             .HasColumnName("NewsArticleID");
-                        j.IndexerProperty<int>("TagId").HasColumnName("TagID");
+                        j.Property(nt => nt.TagId)
+                            .HasColumnName("TagID");
                     });
+
         });
 
         modelBuilder.Entity<SystemAccount>(entity =>

@@ -1,69 +1,97 @@
-﻿using Repositories.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Group7_SE1733_A01_BE.Service.DTOs;
+using Services.DTOs;
+using System.ComponentModel.DataAnnotations;
 
-namespace Services.DTOs
+namespace Group7_SE1733_A01_FE.DTOs
 {
     public class NewsArticleDTO
     {
+        public string NewsArticleId { get; set; }
+
         public string NewsTitle { get; set; }
+
         public string Headline { get; set; }
+
         public DateTime? CreatedDate { get; set; }
+
         public string NewsContent { get; set; }
+
         public string NewsSource { get; set; }
+
         public short? CategoryId { get; set; }
-        public virtual CategoryDTO Category { get; set; }
+
         public bool? NewsStatus { get; set; }
+
         public short? CreatedById { get; set; }
+
         public short? UpdatedById { get; set; }
+
         public DateTime? ModifiedDate { get; set; }
 
-        public List<TagDTO> Tags { get; set; }
+        public virtual CategoryDTO Category { get; set; }
+
+        public virtual SystemAccountDTO? CreatedBy { get; set; }
+
+        public List<int> TagIds { get; set; } = new List<int>();
     }
 
     public class NewsArticleCreateDTO
     {
         public int NewsArticleId { get; set; }
+
+        [Required(ErrorMessage = "NewsTitle is required.")]
         public string NewsTitle { get; set; }
+
+        [Required(ErrorMessage = "Headline is required.")]
         public string Headline { get; set; }
+
         public DateTime? CreatedDate { get; set; }
+
+        [Required(ErrorMessage = "NewsContent is required.")]
         public string NewsContent { get; set; }
+
+        [Required(ErrorMessage = "NewsSource is required.")]
         public string NewsSource { get; set; }
+
+        [Required(ErrorMessage = "CategoryId is required.")]
         public short? CategoryId { get; set; }
+
+        [Required(ErrorMessage = "NewsStatus is required.")]
         public bool? NewsStatus { get; set; }
+
+        [Required(ErrorMessage = "CreatedById is required.")]
         public short? CreatedById { get; set; }
 
-        public List<TagCreateDTO> Tags { get; set; }
+        public List<int> TagIds { get; set; } = new List<int>();
     }
 
     public class NewsArticleUpdateDTO
     {
+        public string NewsArticleId { get; set; }
+
+        [Required(ErrorMessage = "NewsTitle is required.")]
         public string NewsTitle { get; set; }
+
+        [Required(ErrorMessage = "Headline is required.")]
         public string Headline { get; set; }
+
+        [Required(ErrorMessage = "NewsContent is required.")]
         public string NewsContent { get; set; }
+
+        [Required(ErrorMessage = "NewsSource is required.")]
         public string NewsSource { get; set; }
+
+        [Required(ErrorMessage = "CategoryId is required.")]
         public short? CategoryId { get; set; }
+
+        [Required(ErrorMessage = "NewsStatus is required.")]
         public bool? NewsStatus { get; set; }
+
+        [Required(ErrorMessage = "UpdatedById is required.")]
         public short? UpdatedById { get; set; }
+
         public DateTime? ModifiedDate { get; set; }
 
-        public List<TagDTO> Tags { get; set; }
+        public List<int> TagIds { get; set; } = new List<int>();
     }
-
-    public class TagCreateDTO
-    {
-        public string TagName { get; set; }
-        public string Note { get; set; }
-    }
-
-    public class TagDTO
-    {
-        public int TagId { get; set; }
-        public string TagName { get; set; }
-        public string Note { get; set; }
-    }
-
 }

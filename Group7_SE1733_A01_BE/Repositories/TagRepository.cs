@@ -12,17 +12,13 @@ public class TagRepository : GenericRepository<Tag>
         return await _context.Tags.ToListAsync();
     }
 
-    public async Task<List<Tag>> FindByConditionAsync(Expression<Func<Tag, bool>> predicate)
+    public async Task<List<Tag>> Search(string? TagName, string? Note)
     {
-        return await _context.Tags.Where(predicate).ToListAsync();
-    }
+        var items = await _context.Tags
+            .Where(i => (i.TagName.ToString().Contains(TagName) || string.IsNullOrEmpty(TagName))
+            && (i.Note.ToString().Contains(Note) || string.IsNullOrEmpty(Note)))
+            .ToListAsync();
 
-    public async Task<int> GetMaxTagIdAsync()
-    {
-        // Nếu bảng Tag chưa có bản ghi nào thì trả về 0
-        return await _context.Tags.AnyAsync()
-            ? await _context.Tags.MaxAsync(t => t.TagId)
-            : 0;
+        return items;
     }
-
 }
