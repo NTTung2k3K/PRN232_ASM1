@@ -1,0 +1,64 @@
+﻿@page
+@model Group7_SE1733_A01_FE.Pages.Category.IndexModel
+
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Categories</h1>
+
+<form method="get">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">Category Name</label>
+                <input type="text" name="CategoryName" class="form-control" value="@Request.Query["CategoryName"]" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">Description</label>
+                <input type="text" name="CategoryDesciption" class="form-control" value="@Request.Query["CategoryDesciption"]" />
+            </div>
+        </div>
+        <div class="col-md-4 mt-4">
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-success" />
+                <a class="btn btn-primary" asp-page="Create">Create New</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Categories[0].CategoryName)</th>
+            <th>@Html.DisplayNameFor(model => model.Categories[0].CategoryDesciption)</th>
+            <th>@Html.DisplayNameFor(model => model.Categories[0].ParentCategoryId)</th>
+            <th>@Html.DisplayNameFor(model => model.Categories[0].IsActive)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="idTBody">
+        @foreach (var item in Model.Categories)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                <td>@Html.DisplayFor(modelItem => item.CategoryDesciption)</td>
+                <td>@item.ParentCategoryId</td>
+                <td>@(item.IsActive == true ? "Active" : "Inactive")</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.CategoryId">Edit</a> |
+                    <a asp-page="./Detail" asp-route-id="@item.CategoryId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.CategoryId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="~/js/paging.js"></script>
+}

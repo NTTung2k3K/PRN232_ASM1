@@ -18,4 +18,29 @@ namespace Services.DTOs
 
         public bool? IsActive { get; set; }
     }
+
+    public class CategoryCreateDTO
+    {
+
+        public string CategoryName { get; set; }
+
+        public string CategoryDesciption { get; set; }
+
+        public short? ParentCategoryId { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
+    public class CategoryUpdateDTO
+    {
+
+        public string CategoryName { get; set; }
+
+        public string CategoryDesciption { get; set; }
+
+        public short? ParentCategoryId { get; set; }
+
+        public bool? IsActive { get; set; }
+    }
+
 }

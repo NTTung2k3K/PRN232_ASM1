@@ -22,6 +22,5 @@ public partial class Category
     [JsonIgnore]
 
     public virtual ICollection<NewsArticle> NewsArticles { get; set; } = new List<NewsArticle>();
-
     public virtual Category ParentCategory { get; set; }
 }

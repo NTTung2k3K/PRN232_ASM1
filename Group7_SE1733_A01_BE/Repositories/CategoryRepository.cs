@@ -21,6 +21,19 @@ namespace Repositories
         {
             return await _context.Categories.FirstOrDefaultAsync(x => x.CategoryId == id);
         }
+
+        public async Task<List<Category>> Search(string CategoryName, string CategoryDesciption)
+        {
+            var items = await _context.Categories
+                .Where(i => (i.CategoryName.ToString().Contains(CategoryName) || string.IsNullOrEmpty(CategoryName))
+                && (i.CategoryDesciption.ToString().Contains(CategoryDesciption) || string.IsNullOrEmpty(CategoryDesciption)))
+                .ToListAsync();
+
+            return items;
+        }
+
+       
+
     }
 
 
