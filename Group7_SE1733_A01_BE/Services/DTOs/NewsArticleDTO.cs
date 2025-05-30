@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Repositories.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Services.DTOs
         public string NewsContent { get; set; }
         public string NewsSource { get; set; }
         public short? CategoryId { get; set; }
+        public virtual CategoryDTO Category { get; set; }
         public bool? NewsStatus { get; set; }
         public short? CreatedById { get; set; }
         public short? UpdatedById { get; set; }

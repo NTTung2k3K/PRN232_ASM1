@@ -1,0 +1,127 @@
+﻿@page
+@model Group7_SE1733_A01_FE.Pages.NewsArticle.EditModel
+
+@{
+    ViewData["Title"] = "Edit News Article";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>NewsArticle</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="NewsArticle.NewsArticleId" />
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.NewsTitle" class="control-label"></label>
+                <input asp-for="NewsArticle.NewsTitle" class="form-control" />
+                <span asp-validation-for="NewsArticle.NewsTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.Headline" class="control-label"></label>
+                <input asp-for="NewsArticle.Headline" class="form-control" />
+                <span asp-validation-for="NewsArticle.Headline" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.NewsContent" class="control-label"></label>
+                <textarea asp-for="NewsArticle.NewsContent" class="form-control"></textarea>
+                <span asp-validation-for="NewsArticle.NewsContent" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.NewsSource" class="control-label"></label>
+                <input asp-for="NewsArticle.NewsSource" class="form-control" />
+                <span asp-validation-for="NewsArticle.NewsSource" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.NewsStatus" class="control-label"></label>
+                <select asp-for="NewsArticle.NewsStatus" class="form-control">
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+                <span asp-validation-for="NewsArticle.NewsStatus" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.CategoryId" class="control-label"></label>
+                <select asp-for="NewsArticle.CategoryId" class="form-control">
+                    @foreach (var cat in Model.Categories)
+                    {
+                        <option value="@cat.CategoryId">@cat.CategoryName</option>
+                    }
+                </select>
+                <span asp-validation-for="NewsArticle.CategoryId" class="text-danger"></span>
+            </div>
+
+            <hr />
+            <h5>Edit Tags</h5>
+            <div id="tag-container">
+                @for (int i = 0; i < Model.NewsArticle.Tags.Count; i++)
+                {
+                    <input type="hidden" asp-for="NewsArticle.Tags[@i].TagId" />
+
+                    <div class="form-group">
+                        <label>Tag Name</label>
+                        <input asp-for="NewsArticle.Tags[@i].TagName" class="form-control" />
+                        <span asp-validation-for="NewsArticle.Tags[@i].TagName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Note</label>
+                        <input asp-for="NewsArticle.Tags[@i].Note" class="form-control" />
+                        <span asp-validation-for="NewsArticle.Tags[@i].Note" class="text-danger"></span>
+                    </div>
+
+                    <hr />
+                }
+            </div>
+
+            <button type="button" class="btn btn-secondary" onclick="addTag()">Add Tag</button>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.ModifiedDate" class="control-label"></label>
+                <input asp-for="NewsArticle.ModifiedDate" type="datetime-local" class="form-control" />
+                <span asp-validation-for="NewsArticle.ModifiedDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        let tagIndex = @Model.NewsArticle.Tags.Count;
+
+        function addTag() {
+            const container = document.getElementById("tag-container");
+
+            const tagHtml = `
+                <input type="hidden" name="NewsArticle.Tags[${tagIndex}].TagId" value="0" />
+                <div class="form-group">
+                    <label>Tag Name</label>
+                    <input name="NewsArticle.Tags[${tagIndex}].TagName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Note</label>
+                    <input name="NewsArticle.Tags[${tagIndex}].Note" class="form-control" />
+                </div>
+                <hr />
+            `;
+
+            container.insertAdjacentHTML("beforeend", tagHtml);
+            tagIndex++;
+        }
+    </script>
+}

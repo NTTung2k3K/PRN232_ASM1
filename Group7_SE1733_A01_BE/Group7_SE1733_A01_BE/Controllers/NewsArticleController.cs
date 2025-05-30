@@ -100,13 +100,16 @@ namespace Group7_SE1733_A01_BE.Controllers
             }
         }
 
-        // GET: api/NewsArticles/search?status=1
+        // GET: api/NewsArticles/search?newsTitle=abc&headline=xyz&newsSource=bbc
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<NewsArticle>>> SearchByStatus([FromQuery] int status)
+        public async Task<ActionResult<IEnumerable<NewsArticle>>> Search(
+            [FromQuery] string? newsTitle,
+            [FromQuery] string? headline,
+            [FromQuery] string? newsSource)
         {
             try
             {
-                var result = await _newsArticleService.SearchByStatus(status);
+                var result = await _newsArticleService.Search(newsTitle, headline, newsSource);
                 return Ok(result);
             }
             catch (Exception e)
@@ -114,6 +117,33 @@ namespace Group7_SE1733_A01_BE.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        // GET: api/NewsArticles/view-history?createdById=1&NewsTitle=abc&Headline=xyz&NewsSource=bbc
+        [HttpGet("view-history")]
+        public async Task<ActionResult<IEnumerable<NewsArticle>>> GetHistory(
+            [FromQuery] short createdById,
+            [FromQuery] string? NewsTitle,
+            [FromQuery] string? Headline,
+            [FromQuery] string? NewsSource)
+        {
+            try
+            {
+                var result = await _newsArticleService.GetNewsHistoryByUser(
+                    createdById,
+                    NewsTitle ?? string.Empty,
+                    Headline ?? string.Empty,
+                    NewsSource ?? string.Empty
+                );
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
+
         [HttpGet("report")]
         public async Task<ActionResult<IEnumerable<NewsArticle>>> GetReportAsync([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {

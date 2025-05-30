@@ -1,0 +1,119 @@
+﻿@page
+@model Group7_SE1733_A01_FE.Pages.NewsArticle.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>News Article</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.NewsArticleId" class="control-label"></label>
+                <input asp-for="NewsArticle.NewsArticleId" class="form-control" />
+                <span asp-validation-for="NewsArticle.NewsArticleId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.NewsTitle" class="control-label"></label>
+                <input asp-for="NewsArticle.NewsTitle" class="form-control" />
+                <span asp-validation-for="NewsArticle.NewsTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.Headline" class="control-label"></label>
+                <input asp-for="NewsArticle.Headline" class="form-control" />
+                <span asp-validation-for="NewsArticle.Headline" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.CreatedDate" class="control-label"></label>
+                <input asp-for="NewsArticle.CreatedDate" class="form-control" type="datetime-local" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="NewsArticle.CreatedDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.NewsContent" class="control-label"></label>
+                <textarea asp-for="NewsArticle.NewsContent" class="form-control" rows="6"></textarea>
+                <span asp-validation-for="NewsArticle.NewsContent" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.NewsSource" class="control-label"></label>
+                <input asp-for="NewsArticle.NewsSource" class="form-control" />
+                <span asp-validation-for="NewsArticle.NewsSource" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.CategoryId" class="control-label"></label>
+                <select asp-for="NewsArticle.CategoryId" class="form-control" asp-items="Model.CategoryOptions">
+                    <option value="">-- Select Category --</option>
+                </select>
+                <span asp-validation-for="NewsArticle.CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NewsArticle.NewsStatus" class="control-label"></label>
+                <select asp-for="NewsArticle.NewsStatus" class="form-control">
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+                <span asp-validation-for="NewsArticle.NewsStatus" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Create New Tags</label>
+                <div id="tag-container">
+                    <!-- Dynamic tag inputs will be inserted here -->
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" onclick="addTag()">+ Add Tag</button>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+    let tagIndex = 0;
+
+    function addTag() {
+        const container = document.getElementById('tag-container');
+
+        const div = document.createElement('div');
+        div.classList.add("mb-3");
+
+        div.innerHTML = `
+            <input type="hidden" name="TagInputs.index" value="${tagIndex}" />
+            <div class="form-group">
+                <input type="text" name="TagInputs[${tagIndex}].TagName" placeholder="Tag Name" class="form-control mb-1" required />
+                <input type="text" name="TagInputs[${tagIndex}].Note" placeholder="Note" class="form-control" />
+            </div>
+        `;
+
+        container.appendChild(div);
+        tagIndex++;
+    }
+
+    window.onload = function () {
+        // Thêm ít nhất 1 tag mặc định khi form vừa mở
+        addTag();
+    };
+</script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

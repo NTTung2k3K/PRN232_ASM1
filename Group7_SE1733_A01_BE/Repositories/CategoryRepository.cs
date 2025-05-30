@@ -17,7 +17,7 @@ namespace Repositories
             return await _context.Categories.ToListAsync();
         }
 
-        public async Task<Category> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(short id)
         {
             return await _context.Categories.FirstOrDefaultAsync(x => x.CategoryId == id);
         }
