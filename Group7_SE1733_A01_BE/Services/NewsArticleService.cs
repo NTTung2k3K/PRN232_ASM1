@@ -17,6 +17,7 @@ namespace Services
         Task<bool> Delete(string id);
         Task<List<NewsArticle>> GetNewsHistoryByUser(short createdById, string NewsTitle, string Headline, string NewsSource);
         Task<List<NewsArticle>> Search(string NewsTitle, string Headline, string NewsSource);
+        Task<List<NewsArticle>> SearchActiveStatus(string NewsTitle, string Headline, string NewsSource);
         Task<List<NewsArticle>> GetReportAsync(DateTime? startDate, DateTime? endDate);
 
     }
@@ -192,6 +193,10 @@ namespace Services
             return await _newsArticleRepository.Search(NewsTitle,Headline,NewsSource);
         }
 
+        public async Task<List<NewsArticle>> SearchActiveStatus(string NewsTitle, string Headline, string NewsSource)
+        {
+            return await _newsArticleRepository.SearchActiveStatus(NewsTitle, Headline, NewsSource);
+        }
 
         public async Task<List<NewsArticle>> GetReportAsync(DateTime? startDate, DateTime? endDate)
         {

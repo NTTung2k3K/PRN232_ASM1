@@ -30,6 +30,20 @@ namespace Group7_SE1733_A01_BE.Controllers
             }
         }
 
+        // GET: api/Categorys/get-all-active
+        [HttpGet("get-all-active")]
+        public async Task<ActionResult<IEnumerable<Category>>> GetAllActive()
+        {
+            try
+            {
+                return Ok(await _categoryService.GetAllActive());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         // GET: api/Categorys/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetById(short id)

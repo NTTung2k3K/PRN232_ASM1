@@ -12,6 +12,7 @@ namespace Services
     public interface ICategoryService
     {
         Task<List<Category>> GetAll();
+        Task<List<Category>> GetAllActive();
         Task<Category> GetById(short id);
 
         Task<int> Create(CategoryCreateDTO categoryDto);
@@ -37,6 +38,11 @@ namespace Services
         public async Task<List<Category>> GetAll()
         {
             return await _categoryRepository.GetAll();
+        }
+
+        public async Task<List<Category>> GetAllActive()
+        {
+            return await _categoryRepository.GetAllActiveAsync();
         }
 
         public async Task<Category> GetById(short id)

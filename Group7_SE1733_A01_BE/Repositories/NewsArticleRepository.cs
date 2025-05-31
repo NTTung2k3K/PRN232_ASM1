@@ -90,6 +90,21 @@ namespace Repositories
             return items;
         }
 
+        public async Task<List<NewsArticle>> SearchActiveStatus(string NewsTitle, string Headline, string NewsSource)
+        {
+            var items = await _context.NewsArticles
+                .Include(t => t.Tags)
+                .Include(x => x.Category)
+                .Where(i => i.NewsStatus == true
+                    && (i.NewsTitle.Contains(NewsTitle) || string.IsNullOrEmpty(NewsTitle))
+                    && (i.Headline.Contains(Headline) || string.IsNullOrEmpty(Headline))
+                    && (i.NewsSource.Contains(NewsSource) || string.IsNullOrEmpty(NewsSource)))
+                .ToListAsync();
+
+            return items;
+        }
+
+
         public async Task<List<NewsArticle>> ViewHistory(
             short createdById,
             string NewsTitle,
