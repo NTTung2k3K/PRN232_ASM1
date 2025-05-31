@@ -62,34 +62,42 @@
         </tr>
     </thead>
     <tbody id="idTBody">
-        @foreach (var item in Model.NewsArticles)
+        @if (Model.NewsArticles != null && Model.NewsArticles.Count >0)
         {
+            foreach (var item in Model.NewsArticles)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NewsTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Headline)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NewsSource)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+                    <td>
+                        @(item.NewsStatus == true ? "Active" : "Inactive")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.NewsArticleId">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.NewsArticleId">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.NewsArticleId">Delete</a>
+                    </td>
+                </tr>
+            }
+        }else{
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NewsTitle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Headline)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NewsSource)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedDate)
-                </td>
-                <td>
-                    @(item.NewsStatus == true ? "Active" : "Inactive")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.NewsArticleId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.NewsArticleId">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.NewsArticleId">Delete</a>
-                </td>
+                <td colspan="7" class="text-center">No news articles found.</td>
             </tr>
         }
+        
     </tbody>
 </table>
 

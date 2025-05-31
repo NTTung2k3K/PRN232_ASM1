@@ -40,18 +40,29 @@
         </tr>
     </thead>
     <tbody id="idTBody">
-        @foreach (var item in Model.Tags)
+        @if (Model.Tags != null && Model.Tags.Count > 0)
+        {
+            foreach (var item in Model.Tags)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.TagName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Note)</td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.TagId">Edit</a> |
+                        <a asp-page="./Details" asp-route-id="@item.TagId">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.TagId">Delete</a>
+                    </td>
+                </tr>
+            }
+
+        }
+        else
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.TagName)</td>
-                <td>@Html.DisplayFor(modelItem => item.Note)</td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.TagId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.TagId">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.TagId">Delete</a>
-                </td>
+                <td colspan="3" class="text-center">No tags found.</td>
             </tr>
         }
+
     </tbody>
 </table>
 
