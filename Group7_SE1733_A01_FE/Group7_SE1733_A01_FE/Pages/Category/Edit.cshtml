@@ -26,9 +26,27 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Category.ParentCategoryId" class="control-label"></label>
-                <input asp-for="Category.ParentCategoryId" class="form-control" type="number" />
+                <label asp-for="Category.ParentCategoryId" class="control-label">Parent Category</label>
+                <select asp-for="Category.ParentCategoryId"
+                        asp-items="Model.AvailableCategories"
+                        class="form-control">
+                </select>
                 <span asp-validation-for="Category.ParentCategoryId" class="text-danger"></span>
+
+                @* Hiển thị thông tin self-reference nếu có *@
+                @if (Model.CurrentCategory.ParentCategoryId == Model.Id)
+                {
+                    <small class="form-text text-warning">
+                        <strong>Note:</strong> This category is currently referencing itself as parent.
+                    </small>
+                }
+                @* Hiển thị thông tin parent category hiện tại nếu có *@
+                else if (Model.CurrentCategory?.ParentCategory != null)
+                {
+                    <small class="form-text text-muted">
+                        Current parent: @Model.CurrentCategory.ParentCategory.CategoryName
+                    </small>
+                }
             </div>
 
             <div class="form-group">

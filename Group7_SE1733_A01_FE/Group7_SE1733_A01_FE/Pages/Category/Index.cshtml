@@ -36,7 +36,7 @@
         <tr>
             <th>@Html.DisplayNameFor(model => model.Categories[0].CategoryName)</th>
             <th>@Html.DisplayNameFor(model => model.Categories[0].CategoryDesciption)</th>
-            <th>@Html.DisplayNameFor(model => model.Categories[0].ParentCategoryId)</th>
+            <th>@Html.DisplayNameFor(model => model.Categories[0].ParentCategory.CategoryName)</th>
             <th>@Html.DisplayNameFor(model => model.Categories[0].IsActive)</th>
             <th></th>
         </tr>
@@ -47,7 +47,7 @@
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
                 <td>@Html.DisplayFor(modelItem => item.CategoryDesciption)</td>
-                <td>@item.ParentCategoryId</td>
+                <td>@item.ParentCategory.CategoryName</td>
                 <td>@(item.IsActive == true ? "Active" : "Inactive")</td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.CategoryId">Edit</a> |
