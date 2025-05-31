@@ -66,7 +66,7 @@ namespace Group7_SE1733_A01_FE.Pages.NewsArticle
         private async Task LoadCategoriesAsync()
         {
             var client = _httpClientFactory.CreateClient("MyApi");
-            var response = await client.GetAsync("api/Category/get-all");
+            var response = await client.GetAsync("api/Category/get-all-active");
             if (response.IsSuccessStatusCode)
             {
                 var categories = await response.Content.ReadFromJsonAsync<List<CategoryDTO>>();

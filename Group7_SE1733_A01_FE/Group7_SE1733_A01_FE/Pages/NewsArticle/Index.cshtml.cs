@@ -1,17 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Group7_SE1733_A01_FE.DTOs;
-using Group7_SE1733_A01_FE.Response;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Group7_SE1733_A01_FE.Pages.NewsArticle
 {
-    [Authorize(Roles = "1")]
     public class IndexModel : PageModel
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -27,7 +24,17 @@ namespace Group7_SE1733_A01_FE.Pages.NewsArticle
         {
             var client = _httpClientFactory.CreateClient("MyApi");
 
-            var query = $"api/NewsArticles/search?NewsTitle={NewsTitle}&Headline={Headline}&NewsSource={NewsSource}";
+            var role = Request.Cookies["Role"];
+
+            string query;
+            if (role == "1")
+            {
+                query = $"api/NewsArticles/search?NewsTitle={NewsTitle}&Headline={Headline}&NewsSource={NewsSource}";
+            }
+            else
+            {
+                query = $"api/NewsArticles/search-active-status?NewsTitle={NewsTitle}&Headline={Headline}&NewsSource={NewsSource}";
+            }
 
             var response = await client.GetAsync(query);
 

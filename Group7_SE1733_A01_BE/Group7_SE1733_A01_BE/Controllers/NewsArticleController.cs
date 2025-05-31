@@ -119,6 +119,24 @@ namespace Group7_SE1733_A01_BE.Controllers
             }
         }
 
+        // GET: api/NewsArticles/search-active?newsTitle=abc&headline=xyz&newsSource=bbc
+        [HttpGet("search-active-status")]
+        public async Task<ActionResult<IEnumerable<NewsArticle>>> SearchActiveStatus(
+            [FromQuery] string? newsTitle,
+            [FromQuery] string? headline,
+            [FromQuery] string? newsSource)
+        {
+            try
+            {
+                var result = await _newsArticleService.SearchActiveStatus(newsTitle, headline, newsSource);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         // GET: api/NewsArticles/view-history?createdById=1&NewsTitle=abc&Headline=xyz&NewsSource=bbc
         [HttpGet("view-history")]
         public async Task<ActionResult<IEnumerable<NewsArticle>>> GetHistory(

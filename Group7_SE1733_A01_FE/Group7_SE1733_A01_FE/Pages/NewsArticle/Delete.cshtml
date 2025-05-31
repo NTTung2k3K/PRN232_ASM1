@@ -15,6 +15,9 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NewsArticle.NewsArticleId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.NewsArticle.NewsArticleId)</dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NewsArticle.NewsTitle)
         </dt>
@@ -30,6 +33,19 @@
         </dd>
 
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NewsArticle.CreatedDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NewsArticle.CreatedDate)
+        </dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NewsArticle.CreatedById)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.NewsArticle.CreatedById)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NewsArticle.NewsContent)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.NewsArticle.NewsContent)</dd>
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NewsArticle.NewsSource)
         </dt>
         <dd class="col-sm-10">
@@ -43,12 +59,30 @@
             @Html.DisplayFor(model => model.NewsArticle.Category.CategoryName)
         </dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NewsArticle.CreatedDate)
-        </dt>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NewsArticle.ModifiedDate)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.NewsArticle.ModifiedDate)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NewsArticle.UpdatedById)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.NewsArticle.UpdatedById)</dd>
+
+        <dt class="col-sm-2">Tags</dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NewsArticle.CreatedDate)
+            @if (Model.NewsArticle.Tags != null && Model.NewsArticle.Tags.Any())
+            {
+                <ul>
+                    @foreach (var tag in Model.NewsArticle.Tags)
+                    {
+                        <li><strong>@tag.TagName</strong>: @tag.Note</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No tags available.</p>
+            }
         </dd>
+
+
     </dl>
 
     <form method="post">

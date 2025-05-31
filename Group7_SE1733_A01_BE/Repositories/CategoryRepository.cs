@@ -17,6 +17,13 @@ namespace Repositories
             return await _context.Categories.ToListAsync();
         }
 
+        public async Task<List<Category>> GetAllActiveAsync()
+        {
+            return await _context.Categories
+                .Where(c => c.IsActive == true)
+                .ToListAsync();
+        }
+
         public async Task<Category> GetByIdAsync(short id)
         {
             return await _context.Categories.FirstOrDefaultAsync(x => x.CategoryId == id);
