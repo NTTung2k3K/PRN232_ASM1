@@ -10,7 +10,7 @@ using System.Net.Http.Json;
 
 namespace Group7_SE1733_A01_FE.Pages.NewsArticle
 {
-    [Authorize(Roles = "1")]
+    [Authorize(Roles = "0,1")]
     public class DetailsModel : PageModel
     {
         private readonly IHttpClientFactory _httpClientFactory;

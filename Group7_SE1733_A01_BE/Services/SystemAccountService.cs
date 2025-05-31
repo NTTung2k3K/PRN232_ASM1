@@ -1,4 +1,5 @@
-﻿using Group7_SE1733_A01_BE.Service.DTOs;
+﻿using Group7_SE1733_A01_BE.Request;
+using Group7_SE1733_A01_BE.Service.DTOs;
 using Microsoft.Extensions.Configuration;
 using Repositories;
 using Repositories.Models;
@@ -14,6 +15,7 @@ namespace Services
         Task<bool> Delete(int id);
         Task<List<SystemAccount>> Search(string? AccountName, string? AccountEmail, bool? IsSortDescByAccountName);
         Task<SystemAccount> GetUserAccountAsync(string email, string password);
+        Task<bool> UpdateProfile(short id, UpdateProfileDTO SystemAccount);
 
     }
     public class SystemAccountService : ISystemAccountService
@@ -156,6 +158,41 @@ namespace Services
             }
 
             return await _repository.GetUserAccountAsync(email, password);
+        }
+
+        public async Task<bool> UpdateProfile(short id, UpdateProfileDTO SystemAccount)
+        {
+
+            if (string.IsNullOrWhiteSpace(SystemAccount.AccountName))
+                throw new ArgumentException("AccountName cannot be null or empty.");
+            if (string.IsNullOrWhiteSpace(SystemAccount.AccountEmail))
+                throw new ArgumentException("AccountEmail cannot be null or empty.");
+            if (string.IsNullOrWhiteSpace(SystemAccount.AccountPassword))
+                throw new ArgumentException("AccountPassword cannot be null or empty.");
+            if (SystemAccount.AccountEmail.Length > 100)
+                throw new ArgumentException("AccountEmail cannot exceed 100 characters.");
+            if (SystemAccount.AccountPassword.Length < 6 || SystemAccount.AccountPassword.Length > 20)
+                throw new ArgumentException("AccountPassword must be between 6 and 20 characters.");
+
+            // Check existing account
+            var existingAccount = await _repository.GetByIdAsync(id);
+            if (existingAccount == null)
+            {
+                throw new InvalidOperationException("Account is not existed");
+            }
+            // Check email is existed
+            var existingEmail = _repository.GetAll().Result.FirstOrDefault(x => x.AccountEmail == SystemAccount.AccountEmail && x.AccountId != id);
+            if (existingEmail != null)
+            {
+                throw new InvalidOperationException("Email is already existed");
+            }
+            // Update account
+            existingAccount.AccountName = SystemAccount.AccountName;
+            existingAccount.AccountEmail = SystemAccount.AccountEmail;
+            existingAccount.AccountPassword = SystemAccount.AccountPassword;
+
+
+            return await _repository.UpdateAsync(existingAccount) > 0;
         }
     }
 

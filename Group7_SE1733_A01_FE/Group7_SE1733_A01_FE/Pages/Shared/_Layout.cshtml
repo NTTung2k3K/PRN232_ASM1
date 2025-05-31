@@ -35,6 +35,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/SystemAccount/Index">SystemAccount</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/NewsArticle/Report">NewsReport</a>
+                            </li>
                         }
 
                         @if (Context.Request.Cookies["Role"] == "1")
@@ -55,7 +58,14 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <div class="nav-item text-nowrap">
                         Welcome
+                         @if (Context.Request.Cookies["Role"] == "1")
+                        {
+                            <a asp-page="/SystemAccount/Profile" asp-route-id="@Context.Request.Cookies["Id"]"><strong>@Context.Request.Cookies["Email"]</strong></a>
+
+                        }else{
                         <strong>@Context.Request.Cookies["Email"]</strong>
+                            
+                        }
                         <a class="nav-link d-inline text-dark" asp-page="/Auth/Logout">Logout</a>
                     </div>
                 </div>
