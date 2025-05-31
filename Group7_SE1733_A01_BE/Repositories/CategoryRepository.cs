@@ -14,12 +14,12 @@ namespace Repositories
         public CategoryRepository() { }
         public async Task<List<Category>> GetAll()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories.Include(pc => pc.ParentCategory).ToListAsync();
         }
 
         public async Task<List<Category>> GetAllActiveAsync()
         {
-            return await _context.Categories
+            return await _context.Categories.Include(pc => pc.ParentCategory)
                 .Where(c => c.IsActive == true)
                 .ToListAsync();
         }
@@ -31,7 +31,7 @@ namespace Repositories
 
         public async Task<List<Category>> Search(string CategoryName, string CategoryDesciption)
         {
-            var items = await _context.Categories
+            var items = await _context.Categories.Include(pc => pc.ParentCategory)
                 .Where(i => (i.CategoryName.ToString().Contains(CategoryName) || string.IsNullOrEmpty(CategoryName))
                 && (i.CategoryDesciption.ToString().Contains(CategoryDesciption) || string.IsNullOrEmpty(CategoryDesciption)))
                 .ToListAsync();
